@@ -19,32 +19,12 @@ class CoordinateRepository extends ServiceEntityRepository
         parent::__construct($registry, Coordinate::class);
     }
 
-    // /**
-    //  * @return Coordinate[] Returns an array of Coordinate objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getOne($id): array
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $coords = $this->findOneBy(['id' => $id]);
+        return [
+            0 => $coords->getLatitude(),
+            1 => $coords->getLongitude(),
+        ];
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Coordinate
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

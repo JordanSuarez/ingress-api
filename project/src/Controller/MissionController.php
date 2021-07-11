@@ -44,13 +44,8 @@ class MissionController extends BaseController
      */
     public function getAll(): JsonResponse
     {
-        $missions = $this->missionRepository->findAll();
-        $data = [];
+        $missions = $this->missionRepository->getAll();
 
-        foreach ($missions as $mission) {
-            $data[] = $this->missionRepository->getOne($mission->getId());
-        }
-
-        return new JsonResponse($data, Response::HTTP_OK);
+        return new JsonResponse($missions, Response::HTTP_OK);
     }
 }

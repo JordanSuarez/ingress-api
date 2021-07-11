@@ -15,40 +15,46 @@ use stdClass;
  */
 class MissionRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private WaypointRepository $waypointRepository;
+
+    private CoordinateRepository $coordinateRepository;
+
+    public function __construct(ManagerRegistry $registry, WaypointRepository $waypointRepository, CoordinateRepository $coordinateRepository)
     {
         parent::__construct($registry, Mission::class);
+        $this->waypointRepository = $waypointRepository;
+        $this->coordinateRepository = $coordinateRepository;
     }
 
     public function getOne(int $id): stdClass
     {
         $mission = $this->findOneBy(['id' => $id]);
-
         $waypoints = $mission->getWaypoints();
         $formattedWaypoints = [];
 
         foreach ($waypoints as $waypoint) {
-            $formattedWaypoint = new stdClass();
-            $formattedWaypoint->name = $waypoint->getName();
-            $formattedWaypoint->type = $waypoint->getType();
-            $formattedWaypoint->coords = [
-                0 => $waypoint->getCoords()->getLatitude(),
-                1 => $waypoint->getCoords()->getLongitude(),
-            ];
-
+            $formattedWaypoint = $this->waypointRepository->getOne($waypoint->getId());
             $formattedWaypoints[] = $formattedWaypoint;
         }
 
         $data = new stdClass();
-
         $data->id = $mission->getId();
         $data->name = $mission->getName();
         $data->icon = $mission->getIcon();
-        $data->coords = [
-            0 => $mission->getCoords()->getLatitude(),
-            1 => $mission->getCoords()->getLongitude(),
-        ];
+        $data->coords = $this->coordinateRepository->getOne($mission->getCoords()->getId());
         $data->waypoints = $formattedWaypoints;
+
+        return $data;
+    }
+
+    public function getAll(): array
+    {
+        $missions = $this->findAll();
+        $data = [];
+
+        foreach ($missions as $mission) {
+            $data[] = $this->getOne($mission->getId());
+        }
 
         return $data;
     }
