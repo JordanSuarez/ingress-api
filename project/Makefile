@@ -6,10 +6,10 @@ composer-install: ## Installs composer dependencies
 migration: ## Runs the migrations
 	php bin/console make:migration
 
-migrate: ## Runs the migrations
+migrate: ## migrate the migrations
 	php bin/console doctrine:migrations:migrate
 
-fixtures: ## Load the fixtures
+fixtures: ## Load the fixtures from missions.json
 	php bin/console doctrine:fixtures:load
 
 create-db: ## Create the database

@@ -15,5 +15,5 @@ restart: ## Restart the containers
 build: ## Rebuilds all the containers
 	U_ID=${UID} docker-compose build
 
-connect: ## Installs composer dependencies
+connect: ## Connect to the container
 	docker exec -w /var/www/project -it ${DOCKER_API} bash
