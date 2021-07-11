@@ -12,3 +12,11 @@
 - `make migration`
 - `make migrate`
 - `make fixtures`
+
+## Phpmyadmin
+
+`http://localhost:8080`
+
+## Api base url
+
+`http://localhost:8741`
